@@ -22,29 +22,51 @@ public class MyProfiler<K extends Comparable<K>, V> {
     HashTableADT<K, V> hashtable;
     TreeMap<K, V> treemap;
     
-    public MyProfiler() {
+    public MyProfiler(int elements) {
         // Instantiate your HashTable and Java's TreeMap
-    	hashtable = new HashTable();
+    	hashtable = new HashTable(elements, 0.75);
     	treemap = new TreeMap();
     }
     
-    public void insert(K key, V value) throws IllegalNullKeyException, DuplicateKeyException {
+    public void insert(K key, V value) {
         // Insert K, V into both data structures
-    	hashtable.insert(key, value);
-    	treemap.put(key, value);
+    	try {
+    		hashtable.insert(key, value);
+    	} catch(Exception e)
+    	{
+    		System.out.println("hashtable insert failed on ("+key+", "+value+") pair.");
+    	}
+    	
+    	try {
+    		treemap.put(key, value);
+    	} catch(Exception e)
+    	{
+    		System.out.println("treemap insert failed on ("+key+", "+value+") pair.");
+    	}
     }
     
-    public void retrieve(K key) throws IllegalNullKeyException, KeyNotFoundException {
+    public void retrieve(K key) {
         // get value V for key K from data structures
-    	hashtable.get(key);
-    	treemap.get(key);
+    	try {
+    		hashtable.get(key);
+    	} catch(Exception e)
+    	{
+    		System.out.println("hashtable insert failed on "+key);
+    	}
+    	
+    	try {
+    		treemap.get(key);
+    	} catch(Exception e)
+    	{
+    		System.out.println("treemap insert failed on "+key);
+    	}
     }
     
     public static void main(String[] args) {
         try {
             int numElements = Integer.parseInt(args[0]);
             // Create a profile object. 
-            MyProfiler<Integer, Integer> profile = new MyProfiler<Integer, Integer>();
+            MyProfiler<Integer, Integer> profile = new MyProfiler<Integer, Integer>(numElements);
             // execute the insert method of profile as many times as numElements
             for (int i=0; i<numElements; i++) {
             	profile.insert(i, i);
